@@ -1,0 +1,8 @@
+- Botones + y -;
+
+- Deshabilitar Macho/Hembra y todos los inputs de informacion al no tener nada
+  seleccionado
+
+- Manejar excepcion al cambiar de lista
+
+- Lista dinamica en model de jlist
