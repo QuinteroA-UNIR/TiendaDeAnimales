@@ -6,7 +6,6 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import models.Animal;
-import models.AnimalListRenderer;
 import models.Pajaro;
 import models.Pez;
 import models.Reptil;
@@ -32,7 +31,7 @@ import java.awt.Color;
 public class VentanaPrincipal {
 
 	private Animal animalSeleccionado;
-	private AnimalListRenderer listRenderer = new AnimalListRenderer();
+//	private AnimalListRenderer listRenderer = new AnimalListRenderer();
 	private JFrame mainFrame;
 	private JTextField codigoInput;
 	private JTextField alimentacionInput;
@@ -291,7 +290,6 @@ public class VentanaPrincipal {
 				
 			}
 		});
-		listPajaros.setCellRenderer(listRenderer);
 		listPajaros.setBounds(25, 44, 200, 120);
 		mainFrame.getContentPane().add(listPajaros);
 		
@@ -311,7 +309,6 @@ public class VentanaPrincipal {
 				
 			}
 		});
-		listPeces.setCellRenderer(listRenderer);
 		listPeces.setBounds(250, 44, 200, 120);
 		mainFrame.getContentPane().add(listPeces);
 		
@@ -330,7 +327,6 @@ public class VentanaPrincipal {
 				}
 			}
 		});
-		listReptiles.setCellRenderer(listRenderer);
 		listReptiles.setBounds(473, 44, 200, 120);
 		mainFrame.getContentPane().add(listReptiles);
 		
@@ -341,9 +337,11 @@ public class VentanaPrincipal {
 				addPajaro();
 			}
 			private void addPajaro() {
+				int size = pajaros.getSize();
 				animalSeleccionado = new Pajaro("","","","",Sexo.MACHO,"");
 				pajaros.addElement((Pajaro)animalSeleccionado);
-				listPajaros.setSelectedIndex(pajaros.getSize()-1);
+				fillInformationPanel(animalSeleccionado);
+				listPajaros.setSelectedIndex(size);
 			}
 		});
 		btnAddPajaro.setForeground(Color.BLUE);
@@ -388,9 +386,11 @@ public class VentanaPrincipal {
 				addPez();
 			}
 			private void addPez() {
+				int size = peces.getSize();
 				animalSeleccionado = new Pez("","","","",Sexo.MACHO,"");
 				peces.addElement((Pez)animalSeleccionado);
-				listPeces.setSelectedIndex(peces.getSize()-1);
+				fillInformationPanel(animalSeleccionado);
+				listPeces.setSelectedIndex(size);
 			}
 		});
 		btnAddPez.setForeground(Color.BLUE);
@@ -435,9 +435,11 @@ public class VentanaPrincipal {
 				addReptil();
 			}
 			private void addReptil() {
+				int size = reptiles.getSize();
 				animalSeleccionado = new Reptil("","","","",Sexo.MACHO,"");
 				reptiles.addElement((Reptil)animalSeleccionado);
-				listReptiles.setSelectedIndex(reptiles.getSize()-1);
+				fillInformationPanel(animalSeleccionado);
+				listReptiles.setSelectedIndex(size);
 			}
 		});
 		btnAddReptil.setForeground(Color.BLUE);
