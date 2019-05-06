@@ -55,7 +55,6 @@ public class VentanaPrincipal {
 	private JButton btnDelReptil;
 	
 	private DefaultListModel<Pez> peces = new DefaultListModel<Pez>();
-	
 	private DefaultListModel<Pajaro> pajaros = new DefaultListModel<Pajaro>();
 	private DefaultListModel<Reptil> reptiles = new DefaultListModel<Reptil>();
 
@@ -338,8 +337,13 @@ public class VentanaPrincipal {
 		btnAddPajaro = new JButton("+");
 		btnAddPajaro.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				toggleInformationInputs(true);
+			public void mouseReleased(MouseEvent e) {
+				addPajaro();
+			}
+			private void addPajaro() {
+				animalSeleccionado = new Pajaro("","","","",Sexo.MACHO,"");
+				pajaros.addElement((Pajaro)animalSeleccionado);
+				listPajaros.setSelectedIndex(pajaros.getSize()-1);
 			}
 		});
 		btnAddPajaro.setForeground(Color.BLUE);
@@ -378,6 +382,17 @@ public class VentanaPrincipal {
 		mainFrame.getContentPane().add(btnDelPajaro);
 		
 		btnAddPez = new JButton("+");
+		btnAddPez.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				addPez();
+			}
+			private void addPez() {
+				animalSeleccionado = new Pez("","","","",Sexo.MACHO,"");
+				peces.addElement((Pez)animalSeleccionado);
+				listPeces.setSelectedIndex(peces.getSize()-1);
+			}
+		});
 		btnAddPez.setForeground(Color.BLUE);
 		btnAddPez.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 		btnAddPez.setBorderPainted(false);
@@ -414,6 +429,17 @@ public class VentanaPrincipal {
 		mainFrame.getContentPane().add(btnDelPez);
 		
 		btnAddReptil = new JButton("+");
+		btnAddReptil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				addReptil();
+			}
+			private void addReptil() {
+				animalSeleccionado = new Reptil("","","","",Sexo.MACHO,"");
+				reptiles.addElement((Reptil)animalSeleccionado);
+				listReptiles.setSelectedIndex(reptiles.getSize()-1);
+			}
+		});
 		btnAddReptil.setForeground(Color.BLUE);
 		btnAddReptil.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 		btnAddReptil.setBorderPainted(false);
@@ -468,11 +494,13 @@ public class VentanaPrincipal {
         }
 
         protected void updateFieldState() {
-            if (!animalSeleccionado.codigoDeIdentificacion.equals(codigoInput.getText()) ||
+        	boolean inputsChanged = !animalSeleccionado.codigoDeIdentificacion.equals(codigoInput.getText()) ||
         			!animalSeleccionado.especie.equals(especieInput.getText()) ||
         			!animalSeleccionado.alimentacionBasica.equals(alimentacionInput.getText()) ||
-					!animalSeleccionado.observaciones.equals(observacionesInput.getText())
-					){
+					!animalSeleccionado.observaciones.equals(observacionesInput.getText());
+        	
+        	boolean emptyFields = codigoInput.getText().isEmpty() || especieInput.getText().isEmpty() || alimentacionInput.getText().isEmpty();
+            if (inputsChanged && !emptyFields){
             	btnGuardarCambios.setEnabled(true);
             } else {
             	btnGuardarCambios.setEnabled(false);

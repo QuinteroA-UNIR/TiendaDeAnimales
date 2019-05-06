@@ -34,6 +34,9 @@ public abstract class Animal {
 
 	@Override
 	public String toString() {
+		if ((codigoDeIdentificacion == null || codigoDeIdentificacion.isEmpty())&&(especie == null || especie.isEmpty())) {
+			return "NUEVO ANIMAL";
+		}
 		return codigoDeIdentificacion + " - " + especie;
 	}
 }
