@@ -24,15 +24,10 @@ import javax.swing.UIManager;
 import javax.swing.JRadioButton;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.beans.PropertyChangeEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class VentanaPrincipal {
 
@@ -49,9 +44,9 @@ public class VentanaPrincipal {
 	private JRadioButton rdbtnMacho;
 	private JRadioButton rdbtnHembra;
 	private JButton btnGuardarCambios;
-	private JList listPajaros;
-	private JList listPeces;
-	private JList listReptiles;
+	private JList<Pajaro> listPajaros;
+	private JList<Pez> listPeces;
+	private JList<Reptil> listReptiles;
 	private JButton btnAddPajaro;
 	private JButton btnDelPajaro;
 	private JButton btnAddPez;
@@ -59,10 +54,10 @@ public class VentanaPrincipal {
 	private JButton btnAddReptil;
 	private JButton btnDelReptil;
 	
-	private ArrayList<Pez> peces = new ArrayList<Pez>();
+	private DefaultListModel<Pez> peces = new DefaultListModel<Pez>();
 	
-	private ArrayList<Pajaro> pajaros = new ArrayList<Pajaro>();
-	private ArrayList<Reptil> reptiles = new ArrayList<Reptil>();
+	private DefaultListModel<Pajaro> pajaros = new DefaultListModel<Pajaro>();
+	private DefaultListModel<Reptil> reptiles = new DefaultListModel<Reptil>();
 
 	/**
 	 * Launch the application.
@@ -84,17 +79,17 @@ public class VentanaPrincipal {
 	 * Create the application.
 	 */
 	public VentanaPrincipal() {
-		peces.add(new Pez("001","Payaso","AU", "Solo agua fría", Sexo.HEMBRA, "Pienso"));
-		peces.add(new Pez("002","Dorado","ES", "", Sexo.MACHO, "Pienso"));
-		peces.add(new Pez("004","Tetra","JP", "Agua dulce", Sexo.HEMBRA, "Pienso"));
+		peces.addElement(new Pez("001","Payaso","AU", "Solo agua fría", Sexo.HEMBRA, "Pienso"));
+		peces.addElement(new Pez("002","Dorado","ES", "", Sexo.MACHO, "Pienso"));
+		peces.addElement(new Pez("004","Tetra","JP", "Agua dulce", Sexo.HEMBRA, "Pienso"));
 		
-		pajaros.add(new Pajaro("001","Guacamaya","VE", "Solo agua fría", Sexo.HEMBRA, "Semillas de maiz"));
-		pajaros.add(new Pajaro("002","Canario","ES", "", Sexo.MACHO, "Semillas"));
-		pajaros.add(new Pajaro("004","Turpial","VE", "Agua dulce", Sexo.HEMBRA, "Semillas de girasol"));
+		pajaros.addElement(new Pajaro("001","Guacamaya","VE", "Solo agua fría", Sexo.HEMBRA, "Semillas de maiz"));
+		pajaros.addElement(new Pajaro("002","Canario","ES", "", Sexo.MACHO, "Semillas"));
+		pajaros.addElement(new Pajaro("004","Turpial","VE", "Agua dulce", Sexo.HEMBRA, "Semillas de girasol"));
 		
-		reptiles.add(new Reptil("001","Dragon de Komodo","AU", "Solo agua fría", Sexo.HEMBRA, "Si coõ"));
-		reptiles.add(new Reptil("002","Cascabel","CO", "", Sexo.MACHO, "Comida"));
-		reptiles.add(new Reptil("004","Perenquen","ES", "Agua dulce", Sexo.HEMBRA, "Insectos"));
+		reptiles.addElement(new Reptil("001","Dragon de Komodo","AU", "Solo agua fría", Sexo.HEMBRA, "Si coõ"));
+		reptiles.addElement(new Reptil("002","Cascabel","CO", "", Sexo.MACHO, "Comida"));
+		reptiles.addElement(new Reptil("004","Perenquen","ES", "Agua dulce", Sexo.HEMBRA, "Insectos"));
 		initialize();
 		toggleInformationInputs(false);
 	}
@@ -179,10 +174,60 @@ public class VentanaPrincipal {
 		informationPanel.add(lblGenero);
 		
 		rdbtnMacho = new JRadioButton("Macho");
+		rdbtnMacho.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				changeGender();
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				changeGender();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				changeGender();
+			}
+			private void changeGender() {
+				if (!rdbtnMacho.isEnabled()) { return; }
+				rdbtnHembra.setSelected(false);
+				rdbtnMacho.setSelected(true);
+				Sexo selectedSex = rdbtnHembra.isSelected() ? Sexo.HEMBRA : Sexo.MACHO;
+				if (!animalSeleccionado.sexo.equals(selectedSex)) {
+					btnGuardarCambios.setEnabled(true);
+				} else {
+					btnGuardarCambios.setEnabled(false);
+				}
+			}
+		});
 		rdbtnMacho.setBounds(551, 142, 76, 23);
 		informationPanel.add(rdbtnMacho);
 		
 		rdbtnHembra = new JRadioButton("Hembra");
+		rdbtnHembra.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				changeGender();
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				changeGender();
+			}
+			public void mouseReleased(MouseEvent e) {
+				changeGender();
+			}
+			private void changeGender() {
+				if (!rdbtnHembra.isEnabled()) { return; }
+				rdbtnMacho.setSelected(false);
+				rdbtnHembra.setSelected(true);
+				Sexo selectedSex = rdbtnHembra.isSelected() ? Sexo.HEMBRA : Sexo.MACHO;
+				if (!animalSeleccionado.sexo.equals(selectedSex)) {
+					btnGuardarCambios.setEnabled(true);
+				} else {
+					btnGuardarCambios.setEnabled(false);
+				}
+				
+			}
+		});
 		rdbtnHembra.setBounds(551, 166, 91, 23);
 		informationPanel.add(rdbtnHembra);
 		
@@ -190,10 +235,40 @@ public class VentanaPrincipal {
 		btnGuardarCambios.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				saveChanges();
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				saveChanges();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				saveChanges();
+			}
+			private void saveChanges() {
+				Sexo selectedSex = rdbtnHembra.isSelected() ? Sexo.HEMBRA : Sexo.MACHO;
 				animalSeleccionado.codigoDeIdentificacion = codigoInput.getText();
 				animalSeleccionado.alimentacionBasica = alimentacionInput.getText();
 				animalSeleccionado.observaciones = observacionesInput.getText();
 				animalSeleccionado.especie = especieInput.getText();
+				animalSeleccionado.sexo = selectedSex;
+				int index;
+				switch (animalSeleccionado.getTipo()) {
+				case PEZ:
+					index = listPeces.getSelectedIndex();
+					peces.set(index, (Pez)animalSeleccionado);
+					break;
+				case PAJARO:
+					index = listPajaros.getSelectedIndex();
+					pajaros.set(index, (Pajaro)animalSeleccionado);
+					break;
+				default:
+					index = listReptiles.getSelectedIndex();
+					reptiles.set(index, (Reptil)animalSeleccionado);
+					break;
+				}
+				
+				
 				btnGuardarCambios.setEnabled(false);
 			}
 		});
@@ -206,11 +281,15 @@ public class VentanaPrincipal {
 		lblPajaros.setBounds(25, 10, 61, 16);
 		mainFrame.getContentPane().add(lblPajaros);
 		
-		listPajaros = new JList(pajaros.toArray());
+		listPajaros = new JList<>(pajaros);
 		listPajaros.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				Pajaro pajaro = pajaros.get(listPajaros.getSelectedIndex());
-				fillInformationPanel(pajaro);
+				int index = listPajaros.getSelectedIndex();
+				if (index >= 0 && index < pajaros.size()) {
+					Pajaro pajaro = pajaros.get(index);
+					fillInformationPanel(pajaro);
+				}
+				
 			}
 		});
 		listPajaros.setCellRenderer(listRenderer);
@@ -222,11 +301,15 @@ public class VentanaPrincipal {
 		lblPeces.setBounds(250, 10, 61, 16);
 		mainFrame.getContentPane().add(lblPeces);
 		
-		listPeces = new JList(peces.toArray());
+		listPeces = new JList<>(peces);
 		listPeces.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				Pez pez = peces.get(listPeces.getSelectedIndex());
-				fillInformationPanel(pez);
+				int index = listPeces.getSelectedIndex();
+				if (index >= 0 && index < pajaros.size()) {
+					Pez pez = peces.get(index);
+					fillInformationPanel(pez);
+				}
+				
 			}
 		});
 		listPeces.setCellRenderer(listRenderer);
@@ -238,11 +321,14 @@ public class VentanaPrincipal {
 		lblReptiles.setBounds(475, 10, 61, 16);
 		mainFrame.getContentPane().add(lblReptiles);
 		
-		listReptiles = new JList(reptiles.toArray());
+		listReptiles = new JList<>(reptiles);
 		listReptiles.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				Reptil reptil = reptiles.get(listReptiles.getSelectedIndex());
-				fillInformationPanel(reptil);
+				int index = listReptiles.getSelectedIndex();
+				if (index >= 0 && index < pajaros.size()) {
+					Reptil reptil = reptiles.get(index);
+					fillInformationPanel(reptil);	
+				}
 			}
 		});
 		listReptiles.setCellRenderer(listRenderer);
@@ -267,8 +353,20 @@ public class VentanaPrincipal {
 		btnDelPajaro.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int index = pajaros.indexOf(animalSeleccionado);
-				pajaros.remove(animalSeleccionado);				
+				deletePajaro();
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				deletePajaro();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				deletePajaro();
+			}
+			private void deletePajaro() {
+				fillInformationPanel(null);
+				pajaros.removeElement(animalSeleccionado);
+				animalSeleccionado = null;
 			}
 		});
 		btnDelPajaro.setForeground(Color.RED);
@@ -288,6 +386,25 @@ public class VentanaPrincipal {
 		mainFrame.getContentPane().add(btnAddPez);
 		
 		btnDelPez = new JButton("-");
+		btnDelPez.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				deletePez();
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				deletePez();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				deletePez();
+			}
+			private void deletePez() {
+				fillInformationPanel(null);
+				peces.removeElement(animalSeleccionado);
+				animalSeleccionado = null;
+			}
+		});
 		btnDelPez.setForeground(Color.RED);
 		btnDelPez.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 		btnDelPez.setEnabled(false);
@@ -305,6 +422,25 @@ public class VentanaPrincipal {
 		mainFrame.getContentPane().add(btnAddReptil);
 		
 		btnDelReptil = new JButton("-");
+		btnDelReptil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				deleteReptil();
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				deleteReptil();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				deleteReptil();
+			}
+			private void deleteReptil() {
+				fillInformationPanel(null);
+				reptiles.removeElement(animalSeleccionado);
+				animalSeleccionado = null;
+			}
+		});
 		btnDelReptil.setForeground(Color.RED);
 		btnDelReptil.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 		btnDelReptil.setEnabled(false);
@@ -335,7 +471,8 @@ public class VentanaPrincipal {
             if (!animalSeleccionado.codigoDeIdentificacion.equals(codigoInput.getText()) ||
         			!animalSeleccionado.especie.equals(especieInput.getText()) ||
         			!animalSeleccionado.alimentacionBasica.equals(alimentacionInput.getText()) ||
-					!animalSeleccionado.observaciones.equals(observacionesInput.getText()) ){
+					!animalSeleccionado.observaciones.equals(observacionesInput.getText())
+					){
             	btnGuardarCambios.setEnabled(true);
             } else {
             	btnGuardarCambios.setEnabled(false);
@@ -354,10 +491,26 @@ public class VentanaPrincipal {
     	rdbtnReptil.setEnabled(enabled);
     	rdbtnHembra.setEnabled(enabled);
     	rdbtnMacho.setEnabled(enabled);
+    	if (!enabled) {
+	    	rdbtnPajaro.setSelected(false);
+	    	rdbtnReptil.setSelected(false);
+	    	rdbtnPez.setSelected(false);
+	    	rdbtnMacho.setSelected(false);
+			rdbtnHembra.setSelected(false);
+			btnGuardarCambios.setEnabled(false);
+    	}
     }
 	
 	
 	private void fillInformationPanel(Animal animal) {
+		if (animal == null) {
+			codigoInput.setText("");
+			alimentacionInput.setText("");
+			observacionesInput.setText("");
+			especieInput.setText("");
+			toggleInformationInputs(false);
+			return;
+		}
 		toggleInformationInputs(true);
 		animalSeleccionado = animal;
 		codigoInput.setText(animal.codigoDeIdentificacion);
